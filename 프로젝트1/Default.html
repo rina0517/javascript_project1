@@ -1,0 +1,114 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>이미지 슬라이더</title>
+    <h1>2302577 이예린</h1>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 변수를 선언합니다.
+            const width = 460;
+            const height = 300;
+            let current = 0;
+            // 함수를 선언합니다.
+            const moveTo = function () {
+                $('.images').animate({
+                    left: -current * width
+                }, 1000);
+            };
+            // 슬라이더 내부의 이미지 개수를 확인합니다.
+            const imageLength = $('.slider').find('.image').length;
+            // 슬라이더 버튼을 추가합니다.
+            for (let i = 0; i < imageLength; i++) {
+                $('<button></button>')
+                    .attr('data-position', i)
+                    .text(i)
+                    .click(function () {
+                        current = $(this).attr('data-position');
+                        moveTo();
+                    })
+                    .insertBefore('.slider');
+            }
+            // 슬라이더 스타일을 설정합니다.
+            $('.slider').css({
+                position: 'relative',
+                width: width,
+                height: height,
+                overflow: 'hidden'
+            });
+            $('.images').css({
+                position: 'absolute',
+                width: width * imageLength,
+            });
+            $('.image').css({
+                margin: 0,
+                padding: 0,
+                width: width,
+                height: height,
+                display: 'block',
+                float: 'left'
+            });
+            // 3초마다 슬라이더를 이동시킵니다.
+            setInterval(function () {
+                current = current + 1;
+                current = current % imageLength;
+                moveTo();
+            }, 3000);
+        });
+    </script>
+</head>
+<body>
+    <div class="slider">
+        <div class="images">
+            <img class="image" src="http://placehold.it/460x300?text=image_0" />
+            <img class="image" src="http://placehold.it/460x300?text=image_1" />
+            <img class="image" src="http://placehold.it/460x300?text=image_2" />
+            <img class="image" src="http://placehold.it/460x300?text=image_3" />
+            <div class="image">
+                <h1>이미지가 아닌 것</h1>
+                <p>Lorem ipsum dolor sit amet.</p>
+            </div>
+        </div>
+    </div>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
